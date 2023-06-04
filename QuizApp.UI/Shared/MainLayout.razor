@@ -4,18 +4,18 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudLayout>
+    <MudAppBar Color="Color.Primary" Fixed="false">
+        <MudLink Underline="Underline.None" Color="Color.Inherit" Href="/">
+            Quiz App
+            </MudLink>
+        <MudSpacer />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <MudLink Underline="Underline.None" Color="Color.Inherit" Href="/registration">
+            Registration
+            </MudLink>
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
