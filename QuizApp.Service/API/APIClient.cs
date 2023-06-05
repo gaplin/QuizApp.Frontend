@@ -29,4 +29,20 @@ internal class APIClient : IAPIClient
         }
         return (null, null);
     }
+
+    public async Task<(string? token, Dictionary<string, string[]>? errors)> LogInAndGetTokenAsync(LoginViewModel loginModel)
+    {
+        var response = await _httpClient.PostAsJsonAsync("/login", loginModel);
+        if (response.IsSuccessStatusCode)
+        {
+            var token = await response.Content.ReadAsStringAsync();
+            return (token, null);
+        }
+        if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetailsWithErrors>();
+            return (null, problemDetails!.Errors);
+        }
+        return (null, null);
+    }
 }

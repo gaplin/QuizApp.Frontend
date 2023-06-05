@@ -5,9 +5,9 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizApp.UI", "QuizApp.UI\QuizApp.UI.csproj", "{AF3BE212-A4E9-4404-9886-B6BAFCF00C3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Model", "QuizApp.Model\QuizApp.Model.csproj", "{42E44195-D1A7-4688-98FB-65DEC0450EA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizApp.Model", "QuizApp.Model\QuizApp.Model.csproj", "{42E44195-D1A7-4688-98FB-65DEC0450EA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp.Service", "QuizApp.Service\QuizApp.Service.csproj", "{0CA1A253-04F2-4ED7-A6A7-FEAE92921AFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizApp.Service", "QuizApp.Service\QuizApp.Service.csproj", "{0CA1A253-04F2-4ED7-A6A7-FEAE92921AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
