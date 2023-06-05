@@ -1,4 +1,5 @@
-﻿using QuizApp.Model.Responses;
+﻿using QuizApp.Model.Entities;
+using QuizApp.Model.Responses;
 using QuizApp.Model.ViewModels;
 using QuizApp.Service.Interface.APIClient;
 using System.Net.Http.Json;
@@ -44,5 +45,18 @@ internal class APIClient : IAPIClient
             return (null, problemDetails!.Errors);
         }
         return (null, null);
+    }
+
+    public async Task<List<QuizBase>> GetQuizBasesAsync()
+    {
+        var quizzes = await _httpClient.GetFromJsonAsync<List<QuizBase>>("/quizzes/baseinfo");
+        return quizzes ?? new();
+    }
+
+    public async Task<Quiz?> GetQuizAsync(string id, bool shuffle = true)
+    {
+        var quiz = 
+            await _httpClient.GetFromJsonAsync<Quiz>($"/quizzes/{id}?{nameof(shuffle)}={shuffle}");
+        return quiz;
     }
 }

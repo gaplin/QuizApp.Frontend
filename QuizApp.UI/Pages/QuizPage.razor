@@ -1,0 +1,13 @@
+﻿@page "/quiz/{Id}"
+
+@if(_notFound) {
+    <h4>
+        There is nothing here
+    </h4>
+}
+else
+{
+    <h4>
+        @_quiz?.Title
+    </h4>
+}
