@@ -36,7 +36,7 @@ internal class APIClient : IAPIClient
         var response = await _httpClient.PostAsJsonAsync("/login", loginModel);
         if (response.IsSuccessStatusCode)
         {
-            var token = await response.Content.ReadAsStringAsync();
+            var token = await response.Content.ReadFromJsonAsync<string>();
             return (token, null);
         }
         if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)

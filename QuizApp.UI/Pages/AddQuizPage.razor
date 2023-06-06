@@ -27,7 +27,11 @@
                     var question = _model.Questions[ii];
                     <MudCard @key="@question" Class="mx-3 my-3" Elevation="5">
                         <MudCardContent>
-                            <MudTextField @bind-Value="question.Answers[0]"
+                            <MudTextField @bind-Value="@question.Text"
+                                                Required Immediate MaxLength="100"
+                                                Label="Text"
+                            />
+                            <MudTextField @bind-Value="@question.Answers[0]"
                                                 Required Immediate MaxLength="100"
                                           Label="@($"Correct Answer")" />
                             @for (int j = 1; j < question.Answers.Count; j++)

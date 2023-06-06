@@ -57,9 +57,12 @@ public partial class AddQuizPage
                 if (validationErrors is not null)
                 {
                     _apiErrorMessage = "";
-                    foreach (var errorMessage in validationErrors.Values)
+                    foreach (var errorMessages in validationErrors.Values)
                     {
-                        _apiErrorMessage += $"{errorMessage} | ";
+                        foreach (var errorMessage in errorMessages)
+                        {
+                            _apiErrorMessage += $"{errorMessage} | ";
+                        }
                     }
                 }
             }

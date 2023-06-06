@@ -13,6 +13,7 @@
         <AuthorizeView>
 		<Authorized>
             <MudLink Underline="Underline.None" Color="Color.Inherit" Href="/add-quiz" Class="mr-2">Add Quiz</MudLink>
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" OnClick="@LogOut"/>
 		</Authorized>
 		<NotAuthorized>
 			<MudLink Underline="Underline.None" Color="Color.Inherit" Href="/login" Class="mr-2">Login</MudLink>

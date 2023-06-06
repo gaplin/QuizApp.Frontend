@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -20,8 +21,17 @@ public class CustomAuthProvider : AuthenticationStateProvider
             return new AuthenticationState(
                 new ClaimsPrincipal(new ClaimsIdentity()));
         }
-        return new AuthenticationState(
-                new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(jwtToken), "jwtAuth")));
+        var claims = new ClaimsIdentity(ParseClaimsFromJwt(jwtToken), "jwtAuth");
+        var exp = DateTimeOffset.FromUnixTimeSeconds(long.Parse(claims.FindFirst(JwtRegisteredClaimNames.Exp)!.Value));
+        if(exp < DateTime.UtcNow)
+        {
+            await _localStorageService.RemoveItemAsync("jwt-access-token");
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+        } 
+        else
+        {
+            return new AuthenticationState(new ClaimsPrincipal(claims));
+        }
     }
 
     private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)

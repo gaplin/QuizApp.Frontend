@@ -15,7 +15,7 @@ public class CustomHttpHandler : DelegatingHandler
         var jwtToken = await _localStorageService.GetItemAsync<string>("jwt-access-token", cancellationToken);
         if (!string.IsNullOrEmpty(jwtToken))
         {
-            request.Headers.Add("Authorization", $"bearer {jwtToken}");
+            request.Headers.Add("Authorization", $"Bearer {jwtToken}");
         }
 
         return await base.SendAsync(request, cancellationToken);
