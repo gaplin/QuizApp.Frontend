@@ -25,7 +25,7 @@ else
                     @_quiz.Questions[_questionIndex].Text
                 </MudText>
             </MudPaper>
-            <MudProgressLinear Color="Color.Primary" Value="@_progressBarStatus" Class="my-7"
+            <MudProgressLinear Color="Color.Error" Value="@_progressBarStatus" Class="my-7"
             Style="max-width: 30em"/>
             @for (var i = 0; i < _quiz.Questions[_questionIndex].Answers.Count; ++i)
             {

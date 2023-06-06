@@ -29,7 +29,7 @@ public partial class QuizPage : IDisposable
 
     bool disposedValue;
 
-    private double _progressBarStatus;
+    private double _progressBarStatus = 100;
     private DateTime _lastTimerEvent;
 
     protected override async Task OnInitializedAsync()
@@ -49,7 +49,7 @@ public partial class QuizPage : IDisposable
             Snackbar.Add(errorMessage, Severity.Error);
         }
         _score = _questionIndex = 0;
-        _progressBarStatus = 0;
+        _progressBarStatus = 100;
     }
 
     private void AnswerClicked(int index)
@@ -58,7 +58,7 @@ public partial class QuizPage : IDisposable
         {
             ++_score;
         }
-        _progressBarStatus = 0;
+        _progressBarStatus = 100;
         ++_questionIndex;
     }
 
@@ -75,12 +75,12 @@ public partial class QuizPage : IDisposable
     private void OnElapsedEvent(object? source, ElapsedEventArgs e)
     {
         var elapsedTime = (e.SignalTime - _lastTimerEvent).TotalSeconds;
-        _progressBarStatus += elapsedTime / 8 * 100;
+        _progressBarStatus -= elapsedTime / 8 * 100;
         _lastTimerEvent = e.SignalTime;
-        if(_progressBarStatus >= 100)
+        if(_progressBarStatus <= 0)
         {
             ++_questionIndex;
-            _progressBarStatus = 0;
+            _progressBarStatus = 100;
         }
         InvokeAsync(StateHasChanged);
     }
