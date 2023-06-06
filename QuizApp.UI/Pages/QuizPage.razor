@@ -1,13 +1,69 @@
 ﻿@page "/quiz/{Id}"
 
-@if(_notFound) {
+@if(_quiz is null) {
     <h4>
         There is nothing here
     </h4>
 }
 else
 {
-    <h4>
-        @_quiz?.Title
-    </h4>
+    <MudStack Style="text-align: center; align-items: center">
+        <MudPaper Class="pa-3 mud-secondary" MinWidth="50em">
+            <MudText Typo="@Typo.h6">
+                @_quiz.Title
+            </MudText>
+        </MudPaper>
+        <MudPaper Class="pa-3 mud-info" MinWidth="20em">
+            <MudText>
+                Score: @_score
+            </MudText>
+        </MudPaper>
+        @if (_questionIndex < _quiz.Questions.Count)
+        {
+            <MudPaper Class="pa-3 mud-tertiary" MinWidth="20em">
+                <MudText>
+                    @_quiz.Questions[_questionIndex].Text
+                </MudText>
+            </MudPaper>
+            <MudProgressLinear Color="Color.Primary" Value="@_progressBarStatus" Class="my-7"
+            Style="max-width: 30em"/>
+            @for (var i = 0; i < _quiz.Questions[_questionIndex].Answers.Count; ++i)
+            {
+                var ii = i;
+                <MudButton OnClick="@(() => AnswerClicked(ii))">
+                    <MudPaper Class="pa-3 mud-primary mud-warning-text" MinWidth="20em">
+                        <MudText>
+                            @_quiz.Questions[_questionIndex].Answers[ii]
+                        </MudText>
+                    </MudPaper>
+                </MudButton>
+            }
+
+        }
+        else
+        {
+            <MudText>
+                @if (_score == _quiz.Questions.Count)
+                {
+                    @("Congratulations! You\'ve won")
+                }
+                else
+                {
+                    @("Unlucky! You\'ve lost")
+                }
+            </MudText>
+            <MudButtonGroup Color="@Color.Primary" Variant="Variant.Filled">
+                <MudButton OnClick="@TryAgain">
+                    <MudText>
+                        Try Again
+                    </MudText>
+                </MudButton>
+                <MudButton OnClick="@GoToHomePage">
+                    <MudText>
+                        Go to home page
+                    </MudText>
+                </MudButton>
+            </MudButtonGroup>
+        }
+    </MudStack>
 }

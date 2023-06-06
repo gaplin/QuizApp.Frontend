@@ -47,16 +47,27 @@ internal class APIClient : IAPIClient
         return (null, null);
     }
 
-    public async Task<List<QuizBase>> GetQuizBasesAsync()
+    public async Task<(List<QuizBase>?, string?)> GetQuizBasesAsync()
     {
-        var quizzes = await _httpClient.GetFromJsonAsync<List<QuizBase>>("/quizzes/baseinfo");
-        return quizzes ?? new();
+        var response = await _httpClient.GetAsync("/quizzes/baseinfo");
+        if(response.IsSuccessStatusCode)
+        {
+            var quizzes = await response.Content.ReadFromJsonAsync<List<QuizBase>>();
+            return (quizzes, null);
+        }
+        var errorMessage = response.ReasonPhrase;
+        return (null, errorMessage);
     }
 
-    public async Task<Quiz?> GetQuizAsync(string id, bool shuffle = true)
+    public async Task<(Quiz?, string?)> GetQuizAsync(string id, bool shuffle = true)
     {
-        var quiz = 
-            await _httpClient.GetFromJsonAsync<Quiz>($"/quizzes/{id}?{nameof(shuffle)}={shuffle}");
-        return quiz;
+        var response = await _httpClient.GetAsync($"/quizzes/{id}?{nameof(shuffle)}={shuffle}");
+        if (response.IsSuccessStatusCode)
+        {
+            var quiz = await response.Content.ReadFromJsonAsync<Quiz>();
+            return (quiz, null);
+        }
+        var errorMessage = response.ReasonPhrase;
+        return (null, errorMessage);
     }
 }

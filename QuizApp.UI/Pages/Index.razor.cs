@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using QuizApp.Model.Entities;
 using QuizApp.Service.Interface.APIClient;
 
@@ -12,6 +13,9 @@ public partial class Index
     [Inject]
     private NavigationManager NavManager { get; set; } = null!;
 
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = null!;
+
     private List<QuizBase>? _quizzes;
 
     private bool _loading = true;
@@ -20,7 +24,12 @@ public partial class Index
     protected override async Task OnInitializedAsync()
     {
         _loading = true;
-        _quizzes = await ApiClient.GetQuizBasesAsync();
+        var (quizzes, errorMessage) = await ApiClient.GetQuizBasesAsync();
+        if (quizzes is not null) _quizzes = quizzes;
+        else
+        {
+            Snackbar.Add(errorMessage, Severity.Error);
+        }
         _loading = false;
     }
 
