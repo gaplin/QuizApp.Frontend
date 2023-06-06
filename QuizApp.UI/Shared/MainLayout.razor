@@ -1,7 +1,6 @@
-﻿
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider IsDarkMode="true" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -13,7 +12,7 @@
         <MudSpacer />
         <AuthorizeView>
 		<Authorized>
-			<span>@(UserDisplayName(context.User.Claims.ToList()))</span>
+            <MudLink Underline="Underline.None" Color="Color.Inherit" Href="/add-quiz" Class="mr-2">Add Quiz</MudLink>
 		</Authorized>
 		<NotAuthorized>
 			<MudLink Underline="Underline.None" Color="Color.Inherit" Href="/login" Class="mr-2">Login</MudLink>

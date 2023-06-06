@@ -70,4 +70,20 @@ internal class APIClient : IAPIClient
         var errorMessage = response.ReasonPhrase;
         return (null, errorMessage);
     }
+
+    public async Task<(Dictionary<string, string[]>? validationErrors, string? reasonPhrase)> AddQuizAsync(AddQuizViewModel addQuizModel)
+    {
+        var response = await _httpClient.PostAsJsonAsync("/quizzes", addQuizModel);
+        if(response.IsSuccessStatusCode)
+        {
+            return (null, null);
+        }
+        var reasonPhrase = response.ReasonPhrase;
+        if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetailsWithErrors>();
+            return (problemDetails!.Errors, reasonPhrase);
+        }
+        return (null, reasonPhrase);
+    }
 }
