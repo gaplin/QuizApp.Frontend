@@ -1,0 +1,33 @@
+﻿::deep .mud-progress-linear-bar {
+    animation-duration: 2s;
+    animation-name: colorAnimation;
+    animation-iteration-count: infinite;
+}
+
+::deep div {
+    animation-duration: 1s;
+    animation-name: transitionAnimation;
+}
+
+@keyframes colorAnimation {
+    from {
+        background-color: blueviolet;
+    }
+
+    50% {
+        background-color: forestgreen;
+    }
+
+    to {
+        background-color: blueviolet;
+    }
+}
+
+@keyframes transitionAnimation {
+    from {
+        opacity: 0.2;
+    }
+    to {
+        opacity: 1;
+    }
+}
