@@ -10,8 +10,8 @@
 
 
 <div class="ma-6 d-flex  justify-center">
-    <MudCard Width="500px">
-        <MudForm Model="_registrationModel" @ref="_form" Validation="_registrationValidator.ValidateValue">
+    <MudCard Width="40em">
+        <MudForm Model="_registrationModel" @ref="_form" Validation="_registrationValidator.ValidateValue" id="formId">
             <MudCardContent>
                 @if (!string.IsNullOrEmpty(_apiErrorMessage))
                 {
@@ -22,19 +22,19 @@
 
                 <MudTextField @bind-Value="_registrationModel.UserName"
                               For="@(() => _registrationModel.UserName)"
-                              Immediate="true"
+                              Immediate
                               Label="User Name" />
                 <MudTextField @bind-Value="_registrationModel.Login"
                               For="@(() => _registrationModel.Login)"
-                              Immediate="true"
-                              Label="Last Name" InputType="InputType.Email" />
+                              Immediate
+                              Label="Login"/>
                 <MudTextField @bind-Value="_registrationModel.Password"
                               For="@(() => _registrationModel.Password)"
-                              Immediate="true"
+                              Immediate
                               Label="Password" InputType="InputType.Password" />
                 <MudTextField @bind-Value="_registrationModel.ConfirmPassword"
                               For="@(() => _registrationModel.ConfirmPassword)"
-                              Immediate="true"
+                              Immediate
                               Label="Confirm Password" InputType="InputType.Password" />
                 <MudCardActions>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="RegisterAsync">Register</MudButton>

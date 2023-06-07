@@ -1,7 +1,15 @@
 ﻿@page "/registration-confirmation"
+@using QuizApp.UI.Components
 <div class="ma-6 d-flex justify-center">
-    <MudChip Color="Color.Primary">
+    <MudChip Color="Color.Primary" OnClick="@(() => _chipClicked = true)">
         <h3>Registration Successfull. Please Login!</h3>
     </MudChip>
-
+    @if(_chipClicked)
+    {
+        <RedirectToLogin/>
+    }
 </div>
+
+@code {
+    private bool _chipClicked;
+}

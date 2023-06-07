@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using MudBlazor.Services;
 using QuizApp.Model.ViewModels;
 using QuizApp.Service.Interface.APIClient;
 using QuizApp.Service.Validators;
 
 namespace QuizApp.UI.Pages;
 
-public partial class Registration
+public partial class Registration : IDisposable
 {
     private readonly RegistrationViewModel _registrationModel = new();
     private readonly RegistrationModelValidator _registrationValidator = new();
@@ -24,13 +25,36 @@ public partial class Registration
     [Inject]
     private IAPIClient ApiClient { get; set; } = null!;
 
+    [Inject]
+    private IKeyInterceptorFactory KeyInterceptorFactory { get; set; } = null!;
+
+    private IKeyInterceptor? _keyInterceptor;
+
+    private KeyboardEvent? OnEnterPressedHandler;
+
     protected override async Task OnInitializedAsync()
     {
+        OnEnterPressedHandler = async (_) => await RegisterAsync();
         var user = (await AuthState).User;
         if (user!.Identity!.IsAuthenticated)
         {
             NavManager.NavigateTo("/");
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _keyInterceptor = KeyInterceptorFactory.Create();
+            await _keyInterceptor.Connect("formId", new KeyInterceptorOptions
+            {
+                TargetClass = "mud-input-slot",
+                Keys = new List<KeyOptions> { new() { Key = "Enter", SubscribeDown = true } }
+            });
+            _keyInterceptor.KeyDown += OnEnterPressedHandler;
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task RegisterAsync()
@@ -55,5 +79,32 @@ public partial class Registration
                 }
             }
         }
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_keyInterceptor is not null)
+        {
+            if (disposing)
+            {
+                _keyInterceptor.KeyDown -= OnEnterPressedHandler;
+                _keyInterceptor.Dispose();
+            }
+
+            _keyInterceptor = null;
+        }
+    }
+
+    ~Registration()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: false);
+    }
+
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 }

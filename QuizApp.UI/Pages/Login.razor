@@ -5,8 +5,8 @@
     </MudChip>
 </div>
 <div class="ma-6 d-flex  justify-center">
-    <MudCard Width="500px">
-        <MudForm Model="_loginModel" @ref="_form" Validation="_loginValidator.ValidateValue">
+    <MudCard Width="40em">
+        <MudForm Model="_loginModel" @ref="_form" Validation="_loginValidator.ValidateValue" id="formId">
             <MudCardContent>
                 @if (!string.IsNullOrEmpty(_apiErrorMessage))
                 {
@@ -20,7 +20,7 @@
                               Label="Login" />
                 <MudTextField @bind-Value="_loginModel.Password"
                               For="@(() => _loginModel.Password)"
-                              Immediate="true"
+                              Immediate="true" 
                               Label="Password" InputType="InputType.Password" />
                 <MudCardActions>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="LoginAsync">Login</MudButton>
