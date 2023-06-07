@@ -2,9 +2,12 @@
 using MudBlazor;
 using QuizApp.Model.ViewModels;
 using QuizApp.Service.Interface.APIClient;
+using QuizApp.UI.JavaScriptInterop;
+using System.Runtime.Versioning;
 
 namespace QuizApp.UI.Pages;
 
+[SupportedOSPlatform("browser")]
 public partial class AddQuizPage
 {
     private readonly AddQuizViewModel _model = new();
@@ -21,10 +24,10 @@ public partial class AddQuizPage
     private ISnackbar Snackbar { get; set; } = null!;
 
     private string? _apiErrorMessage;
-
     private void AddQuestion()
     {
         _model.Questions.Add(new());
+        Interop.ScrollToElement("mainCardActions", 50);
     }
     private void RemoveQuestion(int idx)
     {

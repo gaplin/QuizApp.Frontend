@@ -1,9 +1,9 @@
 ﻿@page "/quiz/{Id}"
 
 @if(_quiz is null) {
-    <h4>
-        There is nothing here
-    </h4>
+    <MudStack>
+        <MudProgressCircular Indeterminate/>
+    </MudStack>
 }
 else
 {
@@ -20,13 +20,13 @@ else
         </MudPaper>
         @if (_questionIndex < _quiz.Questions.Count)
         {
+            <MudProgressLinear Color="Color.Error" Value="@_progressBarStatus" Class="my-7"
+                               Style="max-width: 30em" />
             <MudPaper Class="pa-3 mud-tertiary" MinWidth="20em">
-                <MudText>
+                <MudText Color="@Color.Primary">
                     @_quiz.Questions[_questionIndex].Text
                 </MudText>
             </MudPaper>
-            <MudProgressLinear Color="Color.Error" Value="@_progressBarStatus" Class="my-7"
-            Style="max-width: 30em"/>
             @for (var i = 0; i < _quiz.Questions[_questionIndex].Answers.Count; ++i)
             {
                 var ii = i;
@@ -43,14 +43,7 @@ else
         else
         {
             <MudText>
-                @if (_score == _quiz.Questions.Count)
-                {
-                    @("Congratulations! You\'ve won")
-                }
-                else
-                {
-                    @("Unlucky! You\'ve lost")
-                }
+                You've scored @_score out of @_quiz.Questions.Count points
             </MudText>
             <MudButtonGroup Color="@Color.Primary" Variant="Variant.Filled">
                 <MudButton OnClick="@TryAgain">

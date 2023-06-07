@@ -25,7 +25,11 @@ public partial class Index
     {
         _loading = true;
         var (quizzes, errorMessage) = await ApiClient.GetQuizBasesAsync();
-        if (quizzes is not null) _quizzes = quizzes;
+        if (quizzes is not null)
+        {
+            _quizzes = quizzes;
+            _quizzes.Sort((x, y) => x.Title.CompareTo(y.Title));
+        }
         else
         {
             Snackbar.Add(errorMessage, Severity.Error);

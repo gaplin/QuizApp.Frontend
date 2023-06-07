@@ -1,25 +1,50 @@
 ﻿@page "/"
+@using QuizApp.Model.Entities;
 
 <PageTitle>QuizApp</PageTitle>
 
-<MudTable Items="@_quizzes" Breakpoint="@Breakpoint.Sm"
-    Loading="@_loading" LoadingProgressColor="@Color.Info">
-    <HeaderContent>
-        <MudTh>Title</MudTh>
-        <MudTh>Category</MudTh>
-        <MudTh>Author</MudTh>
-        <MudTh>Questions</MudTh>
-        <MudTh/>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Category">@context.Category</MudTd>
-        <MudTd DataLabel="Author">@context.Author</MudTd>
-        <MudTd DataLabel="Questions">@context.NumberOfQuestions</MudTd>
-        <MudTd>
-            <MudButton Variant="@Variant.Filled" Color="@Color.Tertiary" OnClick="@(() => GoToQuiz(context))">
-                Try
-            </MudButton>
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+
+
+<div class="px-5" style="max-width: 90em; margin:0 auto">
+    <MudTable Items="@_quizzes" Breakpoint="@Breakpoint.Sm" Elevation="5"
+    Loading="@_loading" LoadingProgressColor="@Color.Info" RowsPerPage="8">
+        <HeaderContent>
+            <MudTh>
+                <MudTableSortLabel SortBy="@(new Func<QuizBase, object>(_ => _.Title))"
+                                   InitialDirection="@SortDirection.Ascending">
+                    Title
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel SortBy="@(new Func<QuizBase, object>(_ => _.Category))">
+                    Category
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel SortBy="@(new Func<QuizBase, object>(_ => _.Author))">
+                    Author
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel SortBy="@(new Func<QuizBase, object>(_ => _.NumberOfQuestions))">
+                    Questions
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh/>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Category">@context.Category</MudTd>
+            <MudTd DataLabel="Author">@context.Author</MudTd>
+            <MudTd DataLabel="Questions">@context.NumberOfQuestions</MudTd>
+            <MudTd>
+                <MudButton Variant="@Variant.Filled" Color="@Color.Tertiary" OnClick="@(() => GoToQuiz(context))">
+                    Try
+                </MudButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new[] {2, 4, 8, 16, 32}" />
+        </PagerContent>
+    </MudTable>
+</div>
