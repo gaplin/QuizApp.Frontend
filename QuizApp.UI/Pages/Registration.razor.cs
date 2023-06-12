@@ -34,7 +34,11 @@ public partial class Registration : IDisposable
 
     protected override async Task OnInitializedAsync()
     {
-        OnEnterPressedHandler = async (_) => await RegisterAsync();
+        OnEnterPressedHandler = async (_) =>
+        {
+            await RegisterAsync();
+            await InvokeAsync(StateHasChanged);
+        };
         var user = (await AuthState).User;
         if (user!.Identity!.IsAuthenticated)
         {

@@ -43,7 +43,11 @@ public partial class Login : IDisposable
 
     protected override async Task OnInitializedAsync()
     {
-        OnEnterPressedHandler = async (_) => await LoginAsync();
+        OnEnterPressedHandler = async (_) =>
+        {
+            await LoginAsync();
+            await InvokeAsync(StateHasChanged);
+        };
         var user = (await AuthState).User;
         if (user!.Identity!.IsAuthenticated)
         {
@@ -58,6 +62,7 @@ public partial class Login : IDisposable
             _keyInterceptor = KeyInterceptorFactory.Create();
             await _keyInterceptor.Connect("formId", new KeyInterceptorOptions
             {
+                EnableLogging = true,
                 TargetClass = "mud-input-slot",
                 Keys = new List<KeyOptions> { new() { Key = "Enter", SubscribeDown = true }}
             });
