@@ -62,7 +62,6 @@ public partial class Login : IDisposable
             _keyInterceptor = KeyInterceptorFactory.Create();
             await _keyInterceptor.Connect("formId", new KeyInterceptorOptions
             {
-                EnableLogging = true,
                 TargetClass = "mud-input-slot",
                 Keys = new List<KeyOptions> { new() { Key = "Enter", SubscribeDown = true }}
             });
