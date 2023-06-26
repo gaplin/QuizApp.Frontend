@@ -1,6 +1,6 @@
 # QuizApp.Frontend
 
-QuizApp written in blazor WASM.
+QuizApp written in blazor WASM. <br>
 Frontend for [this](https://github.com/gaplin/QuizApp.Backend) REST API.<br>
 
 ## Preview
