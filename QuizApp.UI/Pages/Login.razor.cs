@@ -63,7 +63,7 @@ public partial class Login : IDisposable
             await _keyInterceptor.Connect("formId", new KeyInterceptorOptions
             {
                 TargetClass = "mud-input-slot",
-                Keys = new List<KeyOptions> { new() { Key = "Enter", SubscribeDown = true }}
+                Keys = [new() { Key = "Enter", SubscribeDown = true }]
             });
             _keyInterceptor.KeyDown += OnEnterPressedHandler; 
         }

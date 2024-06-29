@@ -13,7 +13,7 @@ public abstract class CustomValidator<T> : AbstractValidator<T>
                     )
                 );
             if (result.IsValid)
-                return Array.Empty<string>();
+                return [];
             return result.Errors.Select(e => e.ErrorMessage);
         };
 }

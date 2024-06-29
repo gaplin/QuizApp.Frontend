@@ -3,19 +3,19 @@
 
 
 <div class="ma-6 d-flex justify-center">
-    <MudChip Color="Color.Primary">
+    <MudChip T="string" Color="Color.Primary">
         <h3>Registration Form</h3>
     </MudChip>
 </div>
 
 
 <div class="ma-6 d-flex  justify-center">
-    <MudCard Width="40em">
+    <MudCard Style="width:40em">
         <MudForm Model="_registrationModel" @ref="_form" Validation="_registrationValidator.ValidateValue" id="formId">
             <MudCardContent>
                 @if (!string.IsNullOrEmpty(_apiErrorMessage))
                 {
-                    <MudChip Class="d-flex justify-center" Color="Color.Error">
+                    <MudChip T="string" Class="d-flex justify-center" Color="Color.Error">
                         <h3>@_apiErrorMessage</h3>
                     </MudChip>
                 }
