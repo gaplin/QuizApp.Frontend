@@ -46,7 +46,7 @@ public partial class QuizPage : IDisposable
         if (quiz is not null) _quiz = quiz;
         else
         {
-            Snackbar.Add(errorMessage, Severity.Error);
+            Snackbar.Add(errorMessage!, Severity.Error);
         }
         _score = _questionIndex = 0;
         _progressBarStatus = 100;

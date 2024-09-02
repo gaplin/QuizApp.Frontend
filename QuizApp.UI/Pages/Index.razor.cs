@@ -32,7 +32,7 @@ public partial class Index
         }
         else
         {
-            Snackbar.Add(errorMessage, Severity.Error);
+            Snackbar.Add(errorMessage!, Severity.Error);
         }
         _loading = false;
     }
