@@ -1,8 +1,9 @@
 ﻿@page "/quiz/{Id}"
 
-@if(_quiz is null) {
-    <MudStack>
-        <MudProgressCircular Indeterminate/>
+@if(_quiz is null)
+{
+    <MudStack AlignItems="AlignItems.Center">
+        <MudProgressCircular Indeterminate />
     </MudStack>
 }
 else
