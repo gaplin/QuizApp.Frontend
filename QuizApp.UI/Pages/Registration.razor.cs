@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using MudBlazor.Services;
 using QuizApp.Model.ViewModels;
@@ -8,7 +9,7 @@ using QuizApp.Service.Validators;
 
 namespace QuizApp.UI.Pages;
 
-public partial class Registration : IDisposable
+public sealed partial class Registration : IDisposable, IAsyncDisposable
 {
     private readonly RegistrationViewModel _registrationModel = new();
     private readonly RegistrationModelValidator _registrationValidator = new();
@@ -24,21 +25,11 @@ public partial class Registration : IDisposable
 
     [Inject]
     private IAPIClient ApiClient { get; set; } = null!;
-
     [Inject]
-    private IKeyInterceptorFactory KeyInterceptorFactory { get; set; } = null!;
-
-    private IKeyInterceptor? _keyInterceptor;
-
-    private KeyboardEvent? OnEnterPressedHandler;
+    private IKeyInterceptorService? KeyInterceptorService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        OnEnterPressedHandler = async (_) =>
-        {
-            await RegisterAsync();
-            await InvokeAsync(StateHasChanged);
-        };
         var user = (await AuthState).User;
         if (user!.Identity!.IsAuthenticated)
         {
@@ -50,15 +41,22 @@ public partial class Registration : IDisposable
     {
         if (firstRender)
         {
-            _keyInterceptor = KeyInterceptorFactory.Create();
-            await _keyInterceptor.Connect("formId", new KeyInterceptorOptions
-            {
-                TargetClass = "mud-input-slot",
-                Keys = [new() { Key = "Enter", SubscribeDown = true }]
-            });
-            _keyInterceptor.KeyDown += OnEnterPressedHandler;
+            var options = new KeyInterceptorOptions(
+                targetClass: "mud-input-slot",
+                keys: new KeyOptions(
+                    key: "Enter",
+                    subscribeDown: true
+                    )
+                );
+            await KeyInterceptorService!.SubscribeAsync("formId", options, keyDown: OnEnterPressed);
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnEnterPressed(KeyboardEventArgs args)
+    {
+        await RegisterAsync();
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task RegisterAsync()
@@ -68,10 +66,11 @@ public partial class Registration : IDisposable
         {
             var (token, errors) = await ApiClient.RegisterAndGetTokenAsync(_registrationModel);
 
-            if(token != null)
+            if (token != null)
             {
                 NavManager.NavigateTo("/registration-confirmation");
-            } else if(errors != null)
+            }
+            else if (errors != null)
             {
                 _apiErrorMessage = "";
                 foreach (var item in errors)
@@ -85,30 +84,20 @@ public partial class Registration : IDisposable
         }
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_keyInterceptor is not null)
-        {
-            if (disposing)
-            {
-                _keyInterceptor.KeyDown -= OnEnterPressedHandler;
-                _keyInterceptor.Dispose();
-            }
-
-            _keyInterceptor = null;
-        }
-    }
-
-    ~Registration()
-    {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: false);
-    }
-
     public void Dispose()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
+        _ = KeyInterceptorService?.UnsubscribeAsync("formId");
+        KeyInterceptorService = null;
+        GC.SuppressFinalize(this);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (KeyInterceptorService is not null)
+        {
+            await KeyInterceptorService.UnsubscribeAsync("formId");
+            KeyInterceptorService = null;
+        }
         GC.SuppressFinalize(this);
     }
 }

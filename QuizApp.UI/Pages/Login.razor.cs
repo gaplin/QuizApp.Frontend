@@ -11,7 +11,7 @@ using QuizApp.Service.Validators;
 
 namespace QuizApp.UI.Pages;
 
-public partial class Login : IDisposable
+public sealed partial class Login : IDisposable, IAsyncDisposable
 {
     private readonly LoginViewModel _loginModel = new();
     private readonly LoginModelValidator _loginValidator = new();
@@ -33,21 +33,11 @@ public partial class Login : IDisposable
 
     [Inject]
     private IAPIClient ApiClient { get; set; } = null!;
-
     [Inject]
-    private IKeyInterceptorFactory KeyInterceptorFactory { get; set; } = null!;
-
-    private IKeyInterceptor? _keyInterceptor;
-
-    private KeyboardEvent? OnEnterPressedHandler;
+    private IKeyInterceptorService? KeyInterceptorService { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
-        OnEnterPressedHandler = async (_) =>
-        {
-            await LoginAsync();
-            await InvokeAsync(StateHasChanged);
-        };
         var user = (await AuthState).User;
         if (user!.Identity!.IsAuthenticated)
         {
@@ -57,17 +47,24 @@ public partial class Login : IDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
-            _keyInterceptor = KeyInterceptorFactory.Create();
-            await _keyInterceptor.Connect("formId", new KeyInterceptorOptions
-            {
-                TargetClass = "mud-input-slot",
-                Keys = [new() { Key = "Enter", SubscribeDown = true }]
-            });
-            _keyInterceptor.KeyDown += OnEnterPressedHandler; 
+            var options = new KeyInterceptorOptions(
+                targetClass: "mud-input-slot",
+                keys: new KeyOptions(
+                    key: "Enter",
+                    subscribeDown: true
+                    )
+                );
+            await KeyInterceptorService!.SubscribeAsync("formId", options, keyDown: OnEnterPressed);
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnEnterPressed(KeyboardEventArgs args)
+    {
+        await LoginAsync();
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task LoginAsync()
@@ -96,29 +93,20 @@ public partial class Login : IDisposable
         }
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_keyInterceptor is not null)
-        {
-            if (disposing)
-            {
-                _keyInterceptor!.KeyDown -= OnEnterPressedHandler;
-                _keyInterceptor!.Dispose();
-            }
-            _keyInterceptor = null;
-        }
-    }
-
-    ~Login()
-    {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: false);
-    }
-
     public void Dispose()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
+        _ = KeyInterceptorService?.UnsubscribeAsync("formId");
+        KeyInterceptorService = null;
+        GC.SuppressFinalize(this);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (KeyInterceptorService is not null)
+        {
+            await KeyInterceptorService.UnsubscribeAsync("formId");
+            KeyInterceptorService = null;
+        }
         GC.SuppressFinalize(this);
     }
 }
