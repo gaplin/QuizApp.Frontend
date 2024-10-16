@@ -23,11 +23,11 @@ public class CustomAuthProvider : AuthenticationStateProvider
         }
         var claims = new ClaimsIdentity(ParseClaimsFromJwt(jwtToken), "jwtAuth");
         var exp = DateTimeOffset.FromUnixTimeSeconds(long.Parse(claims.FindFirst(JwtRegisteredClaimNames.Exp)!.Value));
-        if(exp < DateTime.UtcNow)
+        if (exp < DateTime.UtcNow)
         {
             await _localStorageService.RemoveItemAsync("jwt-access-token");
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-        } 
+        }
         else
         {
             return new AuthenticationState(new ClaimsPrincipal(claims));

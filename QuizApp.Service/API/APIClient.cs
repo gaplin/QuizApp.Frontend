@@ -59,7 +59,7 @@ internal class APIClient : IAPIClient
             }
             return (null, null);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             var dict = new Dictionary<string, string[]>
             {

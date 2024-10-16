@@ -27,7 +27,7 @@ public partial class QuizPage : IDisposable
 
     private readonly Timer _timer = new(100);
 
-    bool disposedValue;
+    private bool disposedValue;
 
     private double _progressBarStatus = 100;
     private DateTime _lastTimerEvent;
@@ -54,7 +54,7 @@ public partial class QuizPage : IDisposable
 
     private void AnswerClicked(int index)
     {
-        if(index == _quiz!.Questions[_questionIndex].CorrectAnswer)
+        if (index == _quiz!.Questions[_questionIndex].CorrectAnswer)
         {
             ++_score;
         }
@@ -77,7 +77,7 @@ public partial class QuizPage : IDisposable
         var elapsedTime = (e.SignalTime - _lastTimerEvent).TotalSeconds;
         _progressBarStatus -= elapsedTime / 8 * 100;
         _lastTimerEvent = e.SignalTime;
-        if(_progressBarStatus <= 0)
+        if (_progressBarStatus <= 0)
         {
             ++_questionIndex;
             _progressBarStatus = 100;
@@ -99,11 +99,9 @@ public partial class QuizPage : IDisposable
         }
     }
 
-   
-
     ~QuizPage()
     {
-         Dispose(disposing: false);
+        Dispose(disposing: false);
     }
 
     public void Dispose()

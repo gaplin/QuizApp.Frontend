@@ -11,7 +11,7 @@ using QuizApp.Service.Validators;
 
 namespace QuizApp.UI.Pages;
 
-public sealed partial class Login : IDisposable, IAsyncDisposable
+public sealed partial class Login : IAsyncDisposable
 {
     private readonly LoginViewModel _loginModel = new();
     private readonly LoginModelValidator _loginValidator = new();
@@ -91,13 +91,6 @@ public sealed partial class Login : IDisposable, IAsyncDisposable
                 }
             }
         }
-    }
-
-    public void Dispose()
-    {
-        _ = KeyInterceptorService?.UnsubscribeAsync("formId");
-        KeyInterceptorService = null;
-        GC.SuppressFinalize(this);
     }
 
     public async ValueTask DisposeAsync()

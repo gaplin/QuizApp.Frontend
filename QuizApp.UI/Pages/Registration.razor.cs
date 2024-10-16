@@ -9,7 +9,7 @@ using QuizApp.Service.Validators;
 
 namespace QuizApp.UI.Pages;
 
-public sealed partial class Registration : IDisposable, IAsyncDisposable
+public sealed partial class Registration : IAsyncDisposable
 {
     private readonly RegistrationViewModel _registrationModel = new();
     private readonly RegistrationModelValidator _registrationValidator = new();
@@ -83,14 +83,6 @@ public sealed partial class Registration : IDisposable, IAsyncDisposable
             }
         }
     }
-
-    public void Dispose()
-    {
-        _ = KeyInterceptorService?.UnsubscribeAsync("formId");
-        KeyInterceptorService = null;
-        GC.SuppressFinalize(this);
-    }
-
     public async ValueTask DisposeAsync()
     {
         if (KeyInterceptorService is not null)

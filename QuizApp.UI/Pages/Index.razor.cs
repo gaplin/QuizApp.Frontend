@@ -20,7 +20,6 @@ public partial class Index
 
     private bool _loading = true;
 
-
     protected override async Task OnInitializedAsync()
     {
         _loading = true;
