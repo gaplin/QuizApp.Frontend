@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Dockerfile" />
+    <File Path="LICENSE.txt" />
+    <File Path="nginx.conf" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="QuizApp.Model/QuizApp.Model.csproj" />
+  <Project Path="QuizApp.Service/QuizApp.Service.csproj" />
+  <Project Path="QuizApp.UI/QuizApp.UI.csproj" />
+</Solution>
