@@ -19,5 +19,8 @@ RUN touch /var/run/nginx.pid && \
 USER nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/publish/wwwroot /usr/share/nginx/html
-EXPOSE 80
+
+# Expose server port from nginx.conf
+EXPOSE 8888
+
 CMD ["nginx", "-g", "daemon off;"]
