@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
     <ProjectReference Include="..\QuizApp.Model\QuizApp.Model.csproj" />
     <ProjectReference Include="..\QuizApp.Service\QuizApp.Service.csproj" />
   </ItemGroup>
