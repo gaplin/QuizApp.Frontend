@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.12-labs
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 COPY --exclude=nginx.conf . .
 RUN dotnet publish "QuizApp.UI/QuizApp.UI.csproj" -c $BUILD_CONFIGURATION -o /app/publish
