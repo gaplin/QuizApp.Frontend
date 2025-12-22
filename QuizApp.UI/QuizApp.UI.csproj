@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.1" />
-    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.1" />
     <ProjectReference Include="..\QuizApp.Model\QuizApp.Model.csproj" />
     <ProjectReference Include="..\QuizApp.Service\QuizApp.Service.csproj" />
   </ItemGroup>
