@@ -61,7 +61,7 @@ public sealed partial class Registration : IAsyncDisposable
 
     private async Task RegisterAsync()
     {
-        await _form.Validate();
+        await _form.ValidateAsync();
         if (_form.IsValid)
         {
             var (token, errors) = await ApiClient.RegisterAndGetTokenAsync(_registrationModel);

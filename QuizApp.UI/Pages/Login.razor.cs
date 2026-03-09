@@ -69,7 +69,7 @@ public sealed partial class Login : IAsyncDisposable
 
     private async Task LoginAsync()
     {
-        await _form.Validate();
+        await _form.ValidateAsync();
         if (_form.IsValid)
         {
             var (token, errors) = await ApiClient.LogInAndGetTokenAsync(_loginModel);

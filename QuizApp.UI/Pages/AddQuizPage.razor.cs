@@ -45,7 +45,7 @@ public partial class AddQuizPage
     }
     private async Task AddQuizAsync()
     {
-        await _form.Validate();
+        await _form.ValidateAsync();
         if (_form.IsValid)
         {
             var (validationErrors, reasonPhrase) = await ApiClient.AddQuizAsync(_model);
